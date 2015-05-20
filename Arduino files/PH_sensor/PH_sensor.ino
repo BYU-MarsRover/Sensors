@@ -104,6 +104,9 @@ void setup(void)
   // Mux pwm setup
   mux_pwm.attach(9);
 }
+
+int last_video =0;
+
 void loop(void)
 {
   //flasher update
@@ -161,22 +164,25 @@ void loop(void)
       // 0 2 6 - switch video 1, 2, 3 laser off
       // 1 3 7 - switch video 1, 2, 3 laser on
       switch(mux_laser){
-        case 1:
+        case 16:
+          last_video = 0;
           //digitalWrite(laser, LOW);
           laser1.enable(0);
           mux_pwm.write(0);
           break;
-        case 2:
+        case 32:
           //digitalWrite(laser, LOW);
+          last_video = 90;
           laser1.enable(0);
           mux_pwm.write(90);
           break;
-        case 3:
+        case 48:
           //digitalWrite(laser, LOW);
+          last_video = 180;
           laser1.enable(0);
           mux_pwm.write(180);
           break;
-        case 9:
+        case 17:
         //case 57:
           // add flasher code here
           //digitalWrite(laser, HIGH);
@@ -184,20 +190,20 @@ void loop(void)
           laser1.enable(1);
           mux_pwm.write(0);
           break;
-        case 10:
+        case 33:
           //digitalWrite(laser, HIGH);
           laser1.enable(1);
           mux_pwm.write(90);
           break;
-        case 11:
+        case 49:
           //digitalWrite(laser, HIGH);
           laser1.enable(1);
           mux_pwm.write(180);
           break;
         default:
           //digitalWrite(laser, LOW);
-          laser1.enable(0);
-          mux_pwm.write(0);
+          //laser1.enable(0);
+          mux_pwm.write(last_video);
           break;
       }
   }
