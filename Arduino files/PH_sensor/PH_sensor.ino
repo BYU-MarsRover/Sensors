@@ -97,12 +97,13 @@ void setup(void)
   sm_Offset = -temp_input/sm_in_air;
   //Serial.begin(9600);  
   Serial.begin(115200);
-  //Serial1.begin(115200);
+    //Serial1.begin(115200);
   // This is commented out because we only want to send back the actually values
   //Serial.println("pH and soil moisture meter experiment!");    //Test the serial monitor
   
   // Mux pwm setup
   mux_pwm.attach(9);
+  mux_pwm.write(1);
 }
 
 int last_video =0;
@@ -155,50 +156,62 @@ void loop(void)
       //Serial.println(Serial.read());
       //digitalWrite(laser,digitalRead(laser)^1);
       mux_laser = Serial.read();
-      Serial.println(mux_laser);
+      //Serial.println(mux_laser, DEC);
+      //Serial.println(mux_laser);
       //Serial.println(mux_laser);
       //laser_int = Serial.read();
       //Serial.println(mux_int);
       //Serial.println(laser_int);
-      
+      //int i = 0;
+      //for(i = 0; i <180;i++){
+       // mux_pwm.write(i);
+       // Serial.println(i);
+       // delay(50);
+      //}
       // 0 2 6 - switch video 1, 2, 3 laser off
       // 1 3 7 - switch video 1, 2, 3 laser on
       switch(mux_laser){
         case 16:
-          last_video = 0;
+        //case 49:
+          last_video = 45;
           //digitalWrite(laser, LOW);
           laser1.enable(0);
-          mux_pwm.write(0);
+          mux_pwm.write(45);
           break;
         case 32:
+        //case 50:
           //digitalWrite(laser, LOW);
           last_video = 90;
-          laser1.enable(0);
+          //laser1.enable(0);
           mux_pwm.write(90);
           break;
         case 48:
+        //case 51:
           //digitalWrite(laser, LOW);
-          last_video = 180;
-          laser1.enable(0);
-          mux_pwm.write(180);
+          last_video = 135;
+          //laser1.enable(0);
+          mux_pwm.write(135);
           break;
         case 17:
         //case 57:
           // add flasher code here
           //digitalWrite(laser, HIGH);
           //Serial.println(" ");
+          last_video = 45;
           laser1.enable(1);
-          mux_pwm.write(0);
+          mux_pwm.write(45);
           break;
         case 33:
           //digitalWrite(laser, HIGH);
           laser1.enable(1);
+          last_video = 90;
           mux_pwm.write(90);
           break;
         case 49:
           //digitalWrite(laser, HIGH);
           laser1.enable(1);
-          mux_pwm.write(180);
+          last_video = 135;
+          mux_pwm.write(135);
           break;
         default:
           //digitalWrite(laser, LOW);
